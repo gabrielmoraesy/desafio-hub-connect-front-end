@@ -1,9 +1,7 @@
-// src/services/productService.ts
-
+import { useToast } from "@/contexts/ToastContext";
 import { IProduct } from "@/interfaces/IProduct";
 import { api } from "@/services/api";
 import { useQuery, useMutation, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
-import { toaster } from "@/components/ui/toaster";
 
 interface IProductResponse {
     dados: IProduct[]
@@ -19,21 +17,23 @@ interface IProductResponseById {
 
 export const useProductService = () => {
     const queryClient = useQueryClient();
+    const { showToast } = useToast();
 
     const useGetProducts = () =>
         useQuery<IProduct[], Error>({
             queryKey: ["product"],
             queryFn: async () => {
-                const { data } = await api.get<IProductResponse>(`/product`);
+                const { data } = await api.get<IProductResponse>("/product");
                 return data.dados;
             },
-            onError: (error: Error) => {
-                toaster.create({
-                    title: `Erro ao buscar produtos`,
-                    description: error.message,
-                    type: "error",
+            onError: (error: unknown) => {
+                const err = error as Error;
+
+                showToast("error", {
+                    title: "Erro ao buscar produtos!",
+                    description: err.message,
                 });
-            }
+            },
         } as UseQueryOptions<IProduct[], Error>);
 
     const useGetProductById = (id: string) =>
@@ -41,60 +41,64 @@ export const useProductService = () => {
             queryKey: ["product", id],
             queryFn: async () => {
                 const { data } = await api.get<IProductResponseById>(`/product/${id}`);
-
-                console.log("produto:", data.dados)
                 return data.dados;
             },
-            onError: (error: Error) => {
-                toaster.create({
+            onError: (error: unknown) => {
+                const err = error as Error;
+
+                showToast("error", {
                     title: `Erro ao buscar produto com ID ${id}`,
-                    description: error.message,
-                    type: "error",
+                    description: err.message,
                 });
-            }
+            },
         } as UseQueryOptions<IProduct, Error>);
 
-
-    const createProduct = useMutation<IProduct, Error, IProduct>({
-        mutationFn: async (newProduct: IProduct) => {
-            const { data } = await api.post<IProduct>("/product", newProduct);
+    const createProduct = useMutation<IProduct, Error, FormData>({
+        mutationFn: async (newProduct: FormData) => {
+            const { data } = await api.post<IProduct>("/product", newProduct, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             return data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-            toaster.create({
-                title: "Produto criado com sucesso",
-                description: "O produto foi adicionado com sucesso.",
-                type: "success",
+
+            showToast("success", {
+                title: "Produto criado",
             });
         },
-        onError: (error: Error) => {
-            toaster.create({
-                title: "Erro ao criar produto",
-                description: error.message,
-                type: "error",
+        onError: (error: unknown) => {
+            const err = error as Error;
+
+            showToast("error", {
+                title: "Erro ao criar produtos!",
+                description: err.message,
             });
         },
     });
 
-    const updateProduct = useMutation<IProduct, Error, { id: string; updatedProduct: IProduct }>({
-        mutationFn: async ({ id, updatedProduct }) => {
-            const { data } = await api.put<IProduct>(`/product/${id}`, updatedProduct);
+    const updateProduct = useMutation<IProduct, Error, { id: string; updateProduct: FormData }>({
+        mutationFn: async ({ id, updateProduct }) => {
+            const { data } = await api.patch<IProduct>(`/product/${id}`, updateProduct, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             return data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-            toaster.create({
-                title: "Produto atualizado com sucesso",
-                description: "O produto foi atualizado com sucesso.",
-                type: "success",
+
+            showToast("success", {
+                title: "Produto editado",
             });
         },
         onError: (error: Error) => {
-            toaster.create({
-                title: "Erro ao atualizar produto",
+            showToast("error", {
+                title: "Erro ao editar produto",
                 description: error.message,
-                type: "error",
             });
         },
     });
@@ -105,17 +109,15 @@ export const useProductService = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-            toaster.create({
-                title: "Produto deletado com sucesso",
-                description: "O produto foi deletado.",
-                type: "success",
+
+            showToast("success", {
+                title: "Produto deletado",
             });
         },
         onError: (error: Error) => {
-            toaster.create({
-                title: "Erro ao deletar produto",
+            showToast("error", {
+                title: "Erro ao excluir produto",
                 description: error.message,
-                type: "error",
             });
         },
     });

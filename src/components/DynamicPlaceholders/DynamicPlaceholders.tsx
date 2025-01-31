@@ -17,7 +17,7 @@ export const DynamicPlaceholders = ({ products = [] }: IDynamicPlaceholders) => 
       sequence={finalSequence}
       wrapper="span"
       speed={1}
-      style={{ fontSize: "16px", display: "inline-block" }}
+      style={{ fontSize: "14px", display: "inline-block" }}
       repeat={Infinity}
     />
   );

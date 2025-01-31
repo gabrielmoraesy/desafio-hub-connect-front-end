@@ -13,21 +13,15 @@ export const createOrEditProductSchema = z.object({
     price: z
         .string()
         .nonempty("Preço é obrigatório")
-        .min(0, "Preço não pode ser negativo")
+        .min(1, "Preço não pode ser zero ou negativo")
         .max(10000000, "Preço não pode ser maior que 10.000.000"),
     category: z.string().nonempty("Categoria é obrigatória"),
-    image_url: z
-        .string()
+    image: z
+        .instanceof(FileList)
         .optional()
-        .refine(
-            (val) =>
-                val === undefined ||
-                val.trim() === "" ||
-                /^https?:\/\/[^\s$.?#].[^\s]*$/.test(val),
-            {
-                message: "URL inválida",
-            }
-        ),
+        .refine((val) => !val || val.length === 0 || val[0] instanceof File, {
+            message: "Imagem inválida",
+        }),
 });
 
 export type CreateOrEditProductFormInputs = z.infer<typeof createOrEditProductSchema>;

@@ -14,7 +14,7 @@ interface ConfirmDialogProps {
   loading?: boolean;
 }
 
-export function ConfirmDialog({
+const ConfirmDialog = ({
   open,
   setOpen,
   onConfirm,
@@ -23,7 +23,7 @@ export function ConfirmDialog({
   titleClass,
   description,
   loading,
-}: ConfirmDialogProps) {
+}: ConfirmDialogProps) => {
   useChangePopStateEvent({
     onReturn: () => setOpen && setOpen(false),
     type: "modal",
@@ -33,24 +33,35 @@ export function ConfirmDialog({
 
   return (
     <DialogRoot open={open}>
-      <DialogContent portalled backdrop>
+      <DialogContent
+        portalled
+        backdrop
+        p={4}
+        position="fixed"
+        top="50%"
+        left="50%"
+        transform="translate(-50%, -50%)"
+        className="w-[85vw] sm:max-w-[500px]"
+      >
         <DialogHeader>
           {title && <Text className={titleClass} fontWeight="bold" fontSize="lg">{title}</Text>}
         </DialogHeader>
         <DialogBody>
           {description && <Text>{description}</Text>}
         </DialogBody>
-        <DialogFooter>
-          <Button variant="outline" onClick={onCancel}>
+        <DialogFooter w={"100%"} mt={2}>
+          <Button variant="outline" onClick={onCancel} w={"50%"}>
             Cancelar
           </Button>
           <Button
-            onClick={onConfirm}
+            onClick={onConfirm} w={"50%"} bg={"#009FE3"} color={"#fff"}
           >
             {loading ? <Spinner size="sm" /> : "Confirmar"}
           </Button>
         </DialogFooter>
       </DialogContent>
-    </DialogRoot>
+    </DialogRoot >
   );
 }
+
+export default ConfirmDialog

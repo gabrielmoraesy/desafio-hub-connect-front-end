@@ -16,7 +16,7 @@ const SkeletonHome = () => {
 
                 <div className="flex gap-4 my-4">
                     {Array.from({ length: 6 }).map((_, index) => (
-                        <Skeleton key={index} className="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow min-h-[250px] w-full" />
+                        <Skeleton key={index} className="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow min-h-[250px] w-full flex-1" />
                     ))}
                 </div>
             </div>

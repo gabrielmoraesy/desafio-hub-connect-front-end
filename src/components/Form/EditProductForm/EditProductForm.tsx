@@ -1,15 +1,15 @@
 import { useProductService } from "@/api/products";
 import { useColorMode } from "@/components/ui/color-mode";
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from "@/components/ui/select";
-import { toaster } from "@/components/ui/toaster";
 import { IProduct } from "@/interfaces/IProduct";
 import { Button, createListCollection, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useRouter } from "next13-progressbar";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CreateOrEditProductFormInputs, createOrEditProductSchema } from "../productSchema";
-import { useRouter } from "next13-progressbar";
 
 type Category = {
     label: string;
@@ -32,14 +32,17 @@ const productCategoryCollection = createListCollection({
 });
 
 const EditProductForm = () => {
-    const router = useRouter()
+    const env = process.env.NEXT_PUBLIC_BACKEND_URL
+    const router = useRouter();
     const { colorMode } = useColorMode();
     const { id }: { id: string | undefined } = useParams();
     const [productSelectedForEdit, setProductSelectedForEdit] = useState<IProduct | null>(null);
-    const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
 
     const { updateProduct, useGetProductById } = useProductService();
     const { data } = useGetProductById(id as string);
+
+    console.log(productSelectedForEdit)
 
     const {
         register,
@@ -63,7 +66,6 @@ const EditProductForm = () => {
             setValue("description", productSelectedForEdit.description);
             setValue("price", String(productSelectedForEdit.price));
             setSelectedCategory(productSelectedForEdit.category);
-            setValue("image_url", productSelectedForEdit.image);
         }
     }, [productSelectedForEdit, setValue]);
 
@@ -71,35 +73,40 @@ const EditProductForm = () => {
         setSelectedCategory(details.value[0]);
     };
 
-
     const handleEditProduct = async (data: CreateOrEditProductFormInputs) => {
         if (productSelectedForEdit && id) {
-            await updateProduct.mutateAsync({
-                id,
-                updatedProduct: {
-                    name: data.name,
-                    description: data.description || undefined,
-                    price: parseFloat(data.price.toString()),
-                    category: data.category!,
-                    image: data.image_url || undefined,
-                },
-            });
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("description", data.description || "");
+            formData.append("price", data.price.toString());
+            formData.append("category", selectedCategory);
 
-            router.push("/dashboard")
+            if (data.image && data.image.length > 0) {
+                const file = data.image[0];
+                formData.append("Image", file);
+            } else if (productSelectedForEdit.imagePath) {
+                formData.append("Image", productSelectedForEdit.imagePath);
+            }
 
-            reset({
-                name: "",
-                description: "",
-                price: "",
-                category: "",
-                image_url: "",
-            });
+            try {
+                if (formData) {
+                    await updateProduct.mutateAsync({
+                        id,
+                        updateProduct: formData
+                    });
+                }
 
-            toaster.create({
-                title: "Produto editado com sucesso!",
-                description: `O produto "${data.name}" foi editado com sucesso.`,
-                type: "success",
-            });
+                router.push("/dashboard");
+
+                reset({
+                    name: "",
+                    description: "",
+                    price: "",
+                    category: ""
+                });
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
 
@@ -168,14 +175,29 @@ const EditProductForm = () => {
                 </div>
             </div>
 
+            {/* Campo de imagem */}
             <div className="flex flex-col gap-2 w-[100%]">
+                {productSelectedForEdit?.imagePath && (
+                    <div className="mb-2 mx-auto flex flex-col gap-2">
+                        <Image
+                            src={`${env}/${productSelectedForEdit.imagePath}`}
+                            alt={`Imagem do produto`}
+                            width={350}
+                            height={350}
+                            quality={100}
+                            loading="lazy"
+                            className="rounded-lg shadow-xl max-w-full object-contain lg:object-cover"
+                        />
+                        <p className="text-gray-500">Imagem atual</p>
+                    </div>
+                )}
                 <Input
-                    {...register("image_url")}
-                    type="text"
+                    {...register("image")}
+                    type="file"
                     placeholder="Digite a URL da imagem do produto..."
-                    className="text-sm sm:text-base p-2 border border-gray-300 rounded w-full"
+                    className="text-sm sm:text-base p-1 border border-gray-300 rounded w-full"
                 />
-                {errors.image_url && <span className="text-red-500">{errors.image_url.message}</span>}
+                {errors.image && <span>{errors.image.message}</span>}
             </div>
 
             <Button

@@ -1,7 +1,7 @@
+import { Component } from "lucide-react";
 import Link from "next/link";
-import { FaCloud, FaEnvelope, FaGithub, FaInstagram, FaLinkedin, FaPhone, FaRegFileAlt } from "react-icons/fa";
-import { SiReact, SiTailwindcss, SiZod, SiDocker, SiDotnet, SiNextdotjs } from "react-icons/si";
-import { FaMicrosoft } from "react-icons/fa";
+import { FaCloud, FaEnvelope, FaGithub, FaInstagram, FaLinkedin, FaMicrosoft, FaPhone, FaRegFileAlt } from "react-icons/fa";
+import { SiDocker, SiDotnet, SiNextdotjs, SiReact, SiTailwindcss, SiTypescript, SiZod } from "react-icons/si";
 
 const AboutComponent = () => {
   return (
@@ -14,10 +14,11 @@ const AboutComponent = () => {
       </p>
       <ul className="list-disc pl-5 mb-4">
         <li className="flex items-center mb-2">
+          <SiTypescript className="text-2xl mr-2" />
           <SiReact className="text-2xl mr-2" />
           <SiNextdotjs className="text-2xl mr-2" />
           <SiTailwindcss className="text-2xl mr-2" />
-          <span><strong>Front-end:</strong> React, NextJs e Tailwind CSS.</span>
+          <span><strong>Front-end:</strong> TypeScript, React, NextJs e Tailwind CSS.</span>
         </li>
         <li className="flex items-center mb-2">
           <SiDotnet className="text-2xl mr-2" />
@@ -26,6 +27,10 @@ const AboutComponent = () => {
         <li className="flex items-center mb-2">
           <FaMicrosoft className="text-2xl mr-2" />
           <span><strong>Banco de Dados:</strong> SQL Server</span>
+        </li>
+        <li className="flex items-center mb-2">
+          <Component className="text-2xl mr-2" />
+          <span><strong>Componentes:</strong> Chakra ui</span>
         </li>
         <li className="flex items-center mb-2">
           <SiZod className="text-2xl mr-2" />

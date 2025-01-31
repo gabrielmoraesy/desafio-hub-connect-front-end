@@ -1,7 +1,6 @@
 import { useProductService } from "@/api/products";
 import { useColorMode } from "@/components/ui/color-mode";
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from "@/components/ui/select";
-import { toaster } from "@/components/ui/toaster";
 import { Button, createListCollection, Input } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next13-progressbar";
@@ -24,7 +23,7 @@ const productCategoryCollection = createListCollection({
 });
 
 const CreateProductForm = () => {
-    const router = useRouter()
+    const router = useRouter();
     const { colorMode } = useColorMode();
     const { createProduct } = useProductService();
 
@@ -38,29 +37,31 @@ const CreateProductForm = () => {
     });
 
     const handleCreateProduct = async (data: CreateOrEditProductFormInputs) => {
-        await createProduct.mutateAsync({
-            name: data.name,
-            description: data.description || undefined,
-            price: parseFloat(data.price.toString()),
-            category: data.category,
-            image: data.image_url || undefined,
-        });
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("description", data.description || "");
+        formData.append("price", data.price.toString());
+        formData.append("category", data.category);
 
-        router.push("/dashboard")
+        if (data.image && data.image.length > 0) {
+            const file = data.image[0];
 
-        reset({
-            name: "",
-            description: "",
-            price: "",
-            category: "",
-            image_url: "",
-        });
+            formData.append("Image", file);
+        }
 
-        toaster.create({
-            title: "Produto criado com sucesso!",
-            description: `O produto "${data.name}" foi criado com sucesso.`,
-            type: "success",
-        });
+        try {
+            await createProduct.mutateAsync(formData);
+            router.push("/dashboard");
+
+            reset({
+                name: "",
+                description: "",
+                price: "",
+                category: "",
+            });
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
@@ -128,12 +129,11 @@ const CreateProductForm = () => {
 
             <div className="flex flex-col gap-2 w-[100%]">
                 <Input
-                    {...register("image_url")}
-                    type="text"
-                    placeholder="Digite a URL da imagem do produto..."
-                    className="text-sm sm:text-base p-2 border border-gray-300 rounded w-full"
+                    type="file"
+                    {...register("image")}
+                    className="text-sm sm:text-base p-1 border border-gray-300 rounded w-full"
                 />
-                {errors.image_url && <span className="text-red-500">{errors.image_url.message}</span>}
+                {errors.image && <span>{errors.image.message}</span>}
             </div>
 
             <Button

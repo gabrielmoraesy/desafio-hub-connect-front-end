@@ -1,10 +1,12 @@
 /* eslint-disable @next/next/no-page-custom-font */
 "use client"
 
-import { Navbar } from "@/components/Navbar";
 import { Provider } from "@/components/ui/provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./globals.css";
+import Navbar from "@/components/Navbar/Navbar";
+import { CartProvider } from "@/contexts/CartContext/CartContext";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 export default function RootLayout({
   children,
@@ -29,10 +31,14 @@ export default function RootLayout({
 
       <body className="antialiased">
         <Provider>
-          <QueryClientProvider client={queryClient}>
-            <Navbar />
-            {children}
-          </QueryClientProvider>
+          <ToastProvider>
+            <QueryClientProvider client={queryClient}>
+              <CartProvider>
+                <Navbar />
+                {children}
+              </CartProvider>
+            </QueryClientProvider>
+          </ToastProvider>
         </Provider>
       </body>
     </html>
