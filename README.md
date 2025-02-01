@@ -28,7 +28,7 @@ O Moraes Store é uma aplicação de gerenciamento de produtos, permitindo que o
 - **Requisições HTTP**: Axios  
   <img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white" alt="Axios" />
 
-Com uma interface amigável, o MoraesFlix facilita a gestão de suas coleções de filmes e avaliações.
+Com uma interface amigável, o Moraes Store facilita a gestão de suas coleções de filmes e avaliações.
 
 ## Installation
 
