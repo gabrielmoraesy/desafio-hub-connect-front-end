@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <h1>🏬 Moraes Store 🛍️</h1>
+</p>
 
-## Getting Started
+## Description
 
-First, run the development server:
+O Moraes Store é uma aplicação de gerenciamento de produtos, permitindo que os usuários adicionem, editem e excluam seus produtos. O projeto foi desenvolvido com tecnologias modernas:
+
+## Tecnologias usadas:
+- **Front-end**: TypeScript, React, NextJs e Tailwind CSS.
+  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+
+- **Back-end**: C# .Net 8  
+  <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+
+  - **Banco de Dados**: SQL Server 
+  <img src="https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white" alt="Prisma" />
+
+  - **Componentes**: Chakra ui
+  <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+
+- **Validações**: Zod e React Hook Form  
+  <img src="https://img.shields.io/badge/Zod-2F8F4F?style=flat-square&logo=zod&logoColor=white" alt="Zod" />
+  <img src="https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat-square&logo=react-hook-form&logoColor=white" alt="React Hook Form" />
+
+- **Requisições HTTP**: Axios  
+  <img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white" alt="Axios" />
+
+Com uma interface amigável, o MoraesFlix facilita a gestão de suas coleções de filmes e avaliações.
+
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+$ npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Create .env file and paste paste inside it
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+$ NEXT_PUBLIC_BACKEND_URL=https://localhost:7270
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Running the app
 
-## Learn More
+```bash
+$ npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Produtos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] O sistema permite adicionar novos produtos ao catálogo, incluindo nome, descrição, preço, categoria e imagem;
+- [x] O sistema permite listar todos os produtos disponíveis no catálogo;
+- [x] O sistema permite exibir detalhes completos de um produto específico;
+- [x] O sistema permite atualizar as informações de um produto, como nome, descrição, preço, categoria e imagem;
+- [x] O sistema permite remover produtos do catálogo;
+- [x] O sistema permite pesquisar por produtos específicos;
+- [x] O sistema permite filtrar produtos por categoria, faixa de preço.
