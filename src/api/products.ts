@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useToast } from "@/contexts/ToastContext";
 import { IProduct } from "@/interfaces/IProduct";
 import { api } from "@/services/api";
@@ -69,12 +70,10 @@ export const useProductService = () => {
                 title: "Produto criado",
             });
         },
-        onError: (error: unknown) => {
-            const err = error as Error;
-
+        onError: (error: any) => {
             showToast("error", {
                 title: "Erro ao criar produtos!",
-                description: err.message,
+                description: error.response.data,
             });
         },
     });
@@ -95,10 +94,10 @@ export const useProductService = () => {
                 title: "Produto editado",
             });
         },
-        onError: (error: Error) => {
+        onError: (error: any) => {
             showToast("error", {
                 title: "Erro ao editar produto",
-                description: error.message,
+                description: error.response.data,
             });
         },
     });

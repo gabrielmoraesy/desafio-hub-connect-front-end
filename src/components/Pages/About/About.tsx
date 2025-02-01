@@ -10,7 +10,7 @@ const AboutComponent = () => {
         Sobre o <span className="text-[#009FE3] font-extrabold">Moraes Store</span>
       </h1>
       <p className="text-base sm:text-lg mb-4">
-        O Moraes Store é uma aplicação de gerenciamento de produtos, permitindo que os usuários adicionem, editem e excluam seus produtos, além de deixarem avaliações. O projeto foi desenvolvido com tecnologias modernas:
+        O Moraes Store é uma aplicação de gerenciamento de produtos, permitindo que os usuários adicionem, editem e excluam seus produtos. O projeto foi desenvolvido com tecnologias modernas:
       </p>
       <ul className="list-disc pl-5 mb-4">
         <li className="flex items-center mb-2">
@@ -47,7 +47,7 @@ const AboutComponent = () => {
         </li>
       </ul>
       <p className="text-base sm:text-lg mb-4">
-        Com uma interface amigável, o Moraes Store facilita a gestão de suas coleções de produtos e avaliações.
+        Com uma interface amigável, o Moraes Store facilita a gestão de seus de produtos.
       </p>
       <div className="flex flex-wrap justify-center gap-6 mt-6">
         <Link href="https://github.com/gabrielmoraesy" target="_blank" className="flex items-center">
