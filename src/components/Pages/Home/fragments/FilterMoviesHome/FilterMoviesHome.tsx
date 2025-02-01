@@ -44,7 +44,7 @@ const FilterProductsHome = ({
     });
 
     return (
-        <Stack gap="5" mx={8} my={2} flexDirection={"row"}>
+        <Stack direction={{ base: "column", md: "row" }} gap={{ base: 2, md: 5 }} mx={8} my={2}>
             <h1 className="flex gap-1 items-center text-sm">
                 <SlidersHorizontal size={20} /> Filtros
             </h1>
@@ -52,7 +52,7 @@ const FilterProductsHome = ({
             <SelectRoot
                 variant="outline"
                 collection={categories}
-                w={"300px"}
+                w={{ base: "100%", md: "250px" }}
                 value={categorySelected}
                 onValueChange={(details) => {
                     const selectedCategory = details.items[0]?.value;
@@ -61,24 +61,38 @@ const FilterProductsHome = ({
                     }
                 }}
             >
-                <SelectTrigger className="rounded-xl border-gray-300 shadow-sm hover:shadow-md focus:ring-2 focus:ring-blue-500 px-3">
+                <SelectTrigger
+                    borderWidth={1}
+                    borderColor="gray.300"
+                    borderRadius="xl"
+                    px={3}
+                    _hover={{ shadow: "md" }}
+                    _focus={{ ring: 2, ringColor: "blue.500" }}
+                >
                     <SelectValueText placeholder="Escolha uma categoria" fontSize={14} />
                     <ChevronDown className="ml-auto text-gray-500" size={18} />
                 </SelectTrigger>
                 <SelectContent
-                    className={`max-h-48 overflow-auto rounded-xl shadow-lg ${colorMode === "dark" ? "bg-gray-900" : "bg-white"}`}
+                    maxHeight="48"
+                    overflowY="auto"
+                    borderRadius="xl"
+                    boxShadow="lg"
+                    bg={colorMode === "dark" ? "gray.900" : "white"}
                     style={{
                         position: "absolute",
                         zIndex: 999,
                         backgroundColor: `${colorMode === "dark" ? "bg-gray-900" : "bg-white"}`,
-                        width: "300px",
+                        width: "250px",
                     }}
                 >
                     {uniqueCategories.map((category) => (
                         <SelectItem
                             item={category}
                             key={category.value}
-                            className="px-4 py-2 hover:bg-gray-100 hover:text-black cursor-pointer text-sm"
+                            py={2}
+                            px={4}
+                            _hover={{ bg: "gray.100", color: "black" }}
+                            fontSize="sm"
                         >
                             {category.label}
                         </SelectItem>
@@ -88,7 +102,7 @@ const FilterProductsHome = ({
 
             {categorySelected.length > 0 && (
                 <div
-                    className="border-2 border-red-600 text-red-600 rounded-lg p-1 text-sm flex items-center"
+                    className="border-2 border-red-600 text-red-600 rounded-lg p-2 text-sm flex items-center"
                     onClick={() => setCategorySelected([])}
                 >
                     <X size={16} />
