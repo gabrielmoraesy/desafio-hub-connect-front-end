@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ArrowBendUpLeft } from "phosphor-react";
 import { Fragment } from "react/jsx-runtime";
 import SkeletonProductDetails from "../SkeletonProductDetails/SkeletonProductDetails";
+import { Rating } from "@/components/ui/rating";
 
 interface InformartionProductDetailsProps {
     product?: IProduct;
@@ -71,6 +72,9 @@ const InformartionProductDetails = ({ product, isLoading }: InformartionProductD
                         <span>R$ </span> {product?.price}
                     </p>
                     <p className={`text-lg mb-4 ${colorMode === "dark" ? "text-white" : "text-gray-500"}`}>{product?.category}</p>
+
+                    <Rating readOnly defaultValue={4} size="md" className="mb-4 block" />
+
 
                     <Button
                         onClick={handleAddToCart}

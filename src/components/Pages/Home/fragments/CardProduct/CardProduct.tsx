@@ -1,4 +1,5 @@
 import { useColorMode } from "@/components/ui/color-mode";
+import { Rating } from "@/components/ui/rating";
 import { IProduct } from "@/interfaces/IProduct";
 import { Button } from "@chakra-ui/react";
 import { ShoppingCartIcon } from "lucide-react";
@@ -29,6 +30,8 @@ const CardProduct = ({ product, handleAddToCart }: CardProduct) => {
                         <span>R$ </span> {product.price}
                     </span>
                 </p>
+
+                <Rating readOnly defaultValue={4} size="xs" />
             </div>
 
             {product?.imagePath &&
