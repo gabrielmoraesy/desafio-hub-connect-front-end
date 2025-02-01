@@ -12,7 +12,7 @@ const UseHome = () => {
     const { data: products, isLoading } = useGetProducts();
 
     const [searchTitle, setSearchTitle] = useState("");
-    const [categorySelected, setCategorySelected] = useState("");
+    const [categorySelected, setCategorySelected] = useState<string[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
@@ -24,9 +24,9 @@ const UseHome = () => {
             );
         }
 
-        if (categorySelected) {
+        if (categorySelected.length > 0) {
             filteredProducts = filteredProducts.filter(
-                (product) => product.category === categorySelected
+                (product) => product.category === categorySelected[0]
             );
         }
 

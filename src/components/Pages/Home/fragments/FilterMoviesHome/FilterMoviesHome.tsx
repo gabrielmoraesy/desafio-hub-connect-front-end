@@ -20,8 +20,8 @@ interface ISearchValues {
 
 interface FilterProductsHomeProps {
     products: IProduct[] | undefined;
-    categorySelected: string
-    setCategorySelected: React.Dispatch<React.SetStateAction<string>>;
+    categorySelected: string[];
+    setCategorySelected: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const FilterProductsHome = ({
@@ -29,8 +29,9 @@ const FilterProductsHome = ({
     categorySelected,
     setCategorySelected,
 }: FilterProductsHomeProps) => {
-    const { colorMode } = useColorMode()
+    const { colorMode } = useColorMode();
 
+    // Obter categorias únicas
     const uniqueCategories: ISearchValues[] = products!.reduce((acc, product) => {
         if (product.category && !acc.some((cat) => cat.value === product.category)) {
             acc.push({ label: product.category, value: product.category });
@@ -48,7 +49,18 @@ const FilterProductsHome = ({
                 <SlidersHorizontal size={20} /> Filtros
             </h1>
 
-            <SelectRoot variant="outline" collection={categories} w={"300px"}>
+            <SelectRoot
+                variant="outline"
+                collection={categories}
+                w={"300px"}
+                value={categorySelected}
+                onValueChange={(details) => {
+                    const selectedCategory = details.items[0]?.value;
+                    if (selectedCategory) {
+                        setCategorySelected([selectedCategory]);
+                    }
+                }}
+            >
                 <SelectTrigger className="rounded-xl border-gray-300 shadow-sm hover:shadow-md focus:ring-2 focus:ring-blue-500 px-3">
                     <SelectValueText placeholder="Escolha uma categoria" fontSize={14} />
                     <ChevronDown className="ml-auto text-gray-500" size={18} />
@@ -67,7 +79,6 @@ const FilterProductsHome = ({
                             item={category}
                             key={category.value}
                             className="px-4 py-2 hover:bg-gray-100 hover:text-black cursor-pointer text-sm"
-                            onClick={() => setCategorySelected(category.value)}
                         >
                             {category.label}
                         </SelectItem>
@@ -75,16 +86,17 @@ const FilterProductsHome = ({
                 </SelectContent>
             </SelectRoot>
 
-            {categorySelected &&
+            {categorySelected.length > 0 && (
                 <div
                     className="border-2 border-red-600 text-red-600 rounded-lg p-1 text-sm flex items-center"
-                    onClick={() => setCategorySelected("")}
+                    onClick={() => setCategorySelected([])}
                 >
                     <X size={16} />
                     Limpar filtros
                 </div>
+            )
             }
-        </Stack>
+        </Stack >
     );
 };
 

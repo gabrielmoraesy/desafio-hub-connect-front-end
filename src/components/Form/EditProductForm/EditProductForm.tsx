@@ -175,7 +175,6 @@ const EditProductForm = () => {
                 </div>
             </div>
 
-            {/* Campo de imagem */}
             <div className="flex flex-col gap-2 w-[100%]">
                 {productSelectedForEdit?.imagePath && (
                     <div className="mb-2 mx-auto flex flex-col gap-2">
